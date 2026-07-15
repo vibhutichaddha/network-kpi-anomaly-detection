@@ -2,13 +2,13 @@
 
 ## Objective
 
-The objective of this project is to build a Deep Learning model using PyTorch that classifies telecom network KPI data into three categories:
+The objective of this project is to build a Deep Learning model using PyTorch to classify telecom network KPI data into three categories:
 
 * Normal
 * Warning
 * Critical
 
-The model helps network engineers automatically detect abnormal network conditions before they affect customer experience.
+The model helps telecom operators automatically detect abnormal network conditions before they impact customer experience.
 
 # Technologies Used
 
@@ -23,12 +23,12 @@ The model helps network engineers automatically detect abnormal network conditio
 ```text
 network_kpi_anomaly_detection/
 │
-├── data/
-│   └── telecom_kpi.csv
-│
+├── telecom_kpi_balanced.csv
 ├── dataset_prep.py
 ├── create_dataset.py
-├── model.py
+├── simple_mlp.py
+├── train.py
+├── learning_rate_experiment.py
 ├── README.md
 │
 ├── X_train.npy
@@ -41,7 +41,7 @@ network_kpi_anomaly_detection/
 
 # Task 1: Neural Network Fundamentals
 
-Studied the basic concepts required for Deep Learning.
+Studied the core concepts of Artificial Neural Networks.
 
 Topics covered:
 
@@ -56,7 +56,7 @@ Topics covered:
 * Forward Propagation
 * Backpropagation
 
-These concepts form the foundation of neural networks and explain how models learn from data.
+These concepts provide the theoretical foundation for building and training deep learning models.
 
 # Task 2: Dataset Preparation
 
@@ -67,7 +67,7 @@ Activities performed:
 * Loaded the dataset
 * Checked missing values
 * Removed duplicate records
-* Created the target label (`Network_Status`)
+* Generated the target column (`Network_Status`)
 * Encoded target labels using `LabelEncoder`
 * Standardized numerical features using `StandardScaler`
 * Split the dataset into:
@@ -75,17 +75,16 @@ Activities performed:
   * Training (70%)
   * Validation (15%)
   * Testing (15%)
-
-The processed datasets were saved as NumPy arrays for later use.
+* Saved the processed datasets as NumPy arrays
 
 # Task 3: Create PyTorch Dataset
 
-The processed datasets were converted into PyTorch tensors.
+The processed data was converted into PyTorch tensors and organized for model training.
 
 Implemented:
 
-* `TensorDataset`
-* `DataLoader`
+* TensorDataset
+* DataLoader
 
 Configuration:
 
@@ -97,13 +96,11 @@ Separate DataLoaders were created for:
 * Validation
 * Testing
 
-This allows the model to efficiently process the data in mini-batches during training and evaluation.
-
 # Task 4: Build a Simple MLP
 
 A Multi-Layer Perceptron (MLP) was implemented using PyTorch.
 
-The architecture consists of:
+Model Architecture:
 
 * Input Layer
 * Hidden Layer (64 neurons)
@@ -126,9 +123,57 @@ The output layer predicts one of the following classes:
 * Warning
 * Critical
 
+# Task 5: Forward and Backward Propagation
+
+The MLP model was trained using the standard deep learning training pipeline.
+
+Implemented:
+
+* CrossEntropyLoss
+* Adam Optimizer
+* Forward Pass
+* Loss Calculation
+* Backpropagation
+* Weight Updates
+
+Training Process:
+
+1. Load a batch of training data.
+2. Perform a forward pass through the network.
+3. Compute the classification loss.
+4. Calculate gradients using backpropagation.
+5. Update model weights using the Adam optimizer.
+6. Repeat for multiple epochs until training is complete.
+
+# Task 6: Learning Rate Experiments
+
+The model was trained using three different learning rates to study their impact on performance.
+
+Learning rates tested:
+
+* 0.1
+* 0.01
+* 0.001
+
+For each experiment:
+
+* A new MLP model was initialized.
+* The model was trained for multiple epochs.
+* Training loss was recorded.
+* Training accuracy was calculated.
+* Validation accuracy was evaluated.
+
+### Observations
+
+| Learning Rate | Convergence Speed | Stability   | Expected Performance                        |
+| ------------- | ----------------- | ----------- | ------------------------------------------- |
+| 0.1           | Very Fast         | Less Stable | May fluctuate during training               |
+| 0.01          | Fast              | Stable      | Good balance between speed and accuracy     |
+| 0.001         | Slow              | Very Stable | Smooth convergence with gradual improvement |
+
 # Dataset Features
 
-The model uses the following KPI metrics:
+The model uses the following telecom KPIs:
 
 * RSRP
 * SINR
@@ -137,31 +182,36 @@ The model uses the following KPI metrics:
 * Packet Loss
 * Connected Users
 
-Depending on preprocessing, additional time-based features such as Hour, Day, and Month may also be included.
+Additional time-based features may also be included depending on the preprocessing strategy.
 
-# Workflow
+# Project Workflow
 
-1. Load telecom KPI dataset.
+1. Load the telecom KPI dataset.
 2. Clean and preprocess the data.
-3. Encode target labels.
-4. Scale numerical features.
+3. Generate and encode target labels.
+4. Standardize numerical features.
 5. Split the dataset into training, validation, and testing sets.
 6. Convert the data into PyTorch tensors.
-7. Create `TensorDataset` and `DataLoader`.
-8. Build the MLP architecture using PyTorch.
+7. Create TensorDatasets and DataLoaders.
+8. Build the MLP model.
+9. Train the model using forward propagation and backpropagation.
+10. Perform learning rate experiments and compare model performance.
 
 # Output
 
-After completing these tasks, the project contains:
+After completing Tasks 1–6, the project includes:
 
-* Cleaned telecom KPI dataset
+* Cleaned and preprocessed telecom KPI dataset
 * Encoded target labels
 * Standardized feature set
-* Train, validation, and test datasets
-* PyTorch DataLoaders
-* Multi-Layer Perceptron (MLP) model ready for training
+* Training, validation, and testing datasets
+* PyTorch TensorDatasets and DataLoaders
+* Multi-Layer Perceptron (MLP) model
+* Model training using CrossEntropyLoss and Adam optimizer
+* Learning rate comparison experiments
+* Training and validation accuracy for different learning rates
 
-The next phase of the project focuses on training the model, evaluating its performance, and using it to predict telecom network anomalies.
+The project is now ready for the next phase, which focuses on model evaluation, performance visualization, and anomaly prediction on unseen telecom KPI data.
 
 ## Author
 Vibhuti Chaddha
