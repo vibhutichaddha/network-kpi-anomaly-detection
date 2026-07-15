@@ -1,0 +1,28 @@
+import numpy as np
+import torch
+from torch.utils.data import TensorDataset, DataLoader
+X_train = np.load("X_train.npy")
+X_val = np.load("X_val.npy")
+X_test = np.load("X_test.npy")
+y_train = np.load("y_train.npy")
+y_val = np.load("y_val.npy")
+y_test = np.load("y_test.npy")
+X_train_tensor = torch.tensor(X_train, dtype=torch.float32)
+X_val_tensor = torch.tensor(X_val, dtype=torch.float32)
+X_test_tensor = torch.tensor(X_test, dtype=torch.float32)
+y_train_tensor = torch.tensor(y_train, dtype=torch.long)
+y_val_tensor = torch.tensor(y_val, dtype=torch.long)
+y_test_tensor = torch.tensor(y_test, dtype=torch.long)
+train_dataset = TensorDataset(X_train_tensor, y_train_tensor)
+validation_dataset = TensorDataset(X_val_tensor, y_val_tensor)
+test_dataset = TensorDataset(X_test_tensor, y_test_tensor)
+batch_size = 32
+train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+val_loader = DataLoader(validation_dataset, batch_size=batch_size, shuffle=False)
+test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+print("Training batches:", len(train_loader))
+print("Validation batches:", len(val_loader))
+print("Testing batches:", len(test_loader))
+features, labels = next(iter(train_loader))
+print("Feature Batch Shape:", features.shape)
+print("Label Batch Shape:", labels.shape)
