@@ -17,6 +17,7 @@ The model helps telecom operators automatically detect abnormal network conditio
 * Pandas
 * NumPy
 * Scikit-learn
+* Matplotlib
 
 # Project Structure
 
@@ -28,7 +29,15 @@ network_kpi_anomaly_detection/
 ├── create_dataset.py
 ├── simple_mlp.py
 ├── train.py
+├── training_validation.py
 ├── learning_rate_experiment.py
+├── hyperparameter_tuning.py
+├── model_evaluation.py
+├── visualization.py
+├── training_history.csv
+├── hyperparameter_results.csv
+├── mlp_model.pth
+├── confusion_matrix.png
 ├── README.md
 │
 ├── X_train.npy
@@ -41,7 +50,7 @@ network_kpi_anomaly_detection/
 
 # Task 1: Neural Network Fundamentals
 
-Studied the core concepts of Artificial Neural Networks.
+Studied the fundamental concepts required for building neural networks.
 
 Topics covered:
 
@@ -56,18 +65,18 @@ Topics covered:
 * Forward Propagation
 * Backpropagation
 
-These concepts provide the theoretical foundation for building and training deep learning models.
+These concepts form the theoretical foundation for developing deep learning models.
 
 # Task 2: Dataset Preparation
 
-The telecom KPI dataset was cleaned and preprocessed before training.
+Prepared the telecom KPI dataset for model training.
 
 Activities performed:
 
 * Loaded the dataset
-* Checked missing values
+* Checked for missing values
 * Removed duplicate records
-* Generated the target column (`Network_Status`)
+* Generated the `Network_Status` target column
 * Encoded target labels using `LabelEncoder`
 * Standardized numerical features using `StandardScaler`
 * Split the dataset into:
@@ -75,11 +84,11 @@ Activities performed:
   * Training (70%)
   * Validation (15%)
   * Testing (15%)
-* Saved the processed datasets as NumPy arrays
+* Saved processed datasets as NumPy arrays
 
 # Task 3: Create PyTorch Dataset
 
-The processed data was converted into PyTorch tensors and organized for model training.
+Converted the processed datasets into PyTorch tensors.
 
 Implemented:
 
@@ -88,7 +97,7 @@ Implemented:
 
 Configuration:
 
-* Batch Size: **32**
+* Batch Size: 32
 
 Separate DataLoaders were created for:
 
@@ -98,9 +107,9 @@ Separate DataLoaders were created for:
 
 # Task 4: Build a Simple MLP
 
-A Multi-Layer Perceptron (MLP) was implemented using PyTorch.
+Designed a Multi-Layer Perceptron (MLP) using PyTorch.
 
-Model Architecture:
+Architecture:
 
 * Input Layer
 * Hidden Layer (64 neurons)
@@ -111,13 +120,13 @@ Model Architecture:
 * Dropout Layer
 * Output Layer (3 neurons)
 
-PyTorch modules used:
+Modules used:
 
 * `nn.Linear`
 * `nn.ReLU`
 * `nn.Dropout`
 
-The output layer predicts one of the following classes:
+The output layer predicts:
 
 * Normal
 * Warning
@@ -125,29 +134,25 @@ The output layer predicts one of the following classes:
 
 # Task 5: Forward and Backward Propagation
 
-The MLP model was trained using the standard deep learning training pipeline.
+Implemented the complete training process.
 
-Implemented:
+Components used:
 
 * CrossEntropyLoss
 * Adam Optimizer
+
+Training pipeline:
+
 * Forward Pass
 * Loss Calculation
 * Backpropagation
 * Weight Updates
 
-Training Process:
-
-1. Load a batch of training data.
-2. Perform a forward pass through the network.
-3. Compute the classification loss.
-4. Calculate gradients using backpropagation.
-5. Update model weights using the Adam optimizer.
-6. Repeat for multiple epochs until training is complete.
+The model learns by minimizing the classification loss over multiple epochs.
 
 # Task 6: Learning Rate Experiments
 
-The model was trained using three different learning rates to study their impact on performance.
+Evaluated model performance using different learning rates.
 
 Learning rates tested:
 
@@ -155,25 +160,114 @@ Learning rates tested:
 * 0.01
 * 0.001
 
-For each experiment:
+For each learning rate:
 
-* A new MLP model was initialized.
-* The model was trained for multiple epochs.
-* Training loss was recorded.
-* Training accuracy was calculated.
-* Validation accuracy was evaluated.
+* Model trained independently
+* Training loss recorded
+* Training accuracy calculated
+* Validation accuracy evaluated
 
-### Observations
+The experiments helped compare convergence speed, stability, and overall model performance.
 
-| Learning Rate | Convergence Speed | Stability   | Expected Performance                        |
-| ------------- | ----------------- | ----------- | ------------------------------------------- |
-| 0.1           | Very Fast         | Less Stable | May fluctuate during training               |
-| 0.01          | Fast              | Stable      | Good balance between speed and accuracy     |
-| 0.001         | Slow              | Very Stable | Smooth convergence with gradual improvement |
+# Task 7: Training and Validation
+
+The MLP was trained for **50 epochs**.
+
+Metrics recorded for every epoch:
+
+* Training Loss
+* Validation Loss
+* Training Accuracy
+* Validation Accuracy
+
+All training statistics were stored in:
+
+```text
+training_history.csv
+```
+
+This file provides a complete history of the model's learning progress.
+
+# Task 8: Training Curve Visualization
+
+The training history was visualized using Matplotlib.
+
+Generated plots:
+
+* Training Loss vs Epochs
+* Validation Loss vs Epochs
+* Training Accuracy vs Epochs
+* Validation Accuracy vs Epochs
+
+Output figures:
+
+* `training_loss.png`
+* `validation_loss.png`
+* `training_accuracy.png`
+* `validation_accuracy.png`
+
+These plots help analyze convergence, detect overfitting, and understand the learning behavior of the model.
+
+# Task 9: Hyperparameter Tuning
+
+Performed experiments using different combinations of hyperparameters.
+
+### Hidden Units
+
+* 32
+* 64
+* 128
+
+### Batch Size
+
+* 16
+* 32
+* 64
+
+### Epochs
+
+* 25
+* 50
+* 100
+
+Each combination was trained and evaluated on the validation dataset.
+
+Results were stored in:
+
+```text
+hyperparameter_results.csv
+```
+
+This process helps identify the best-performing model configuration.
+
+# Task 10: Model Evaluation
+
+The final trained model was evaluated using the test dataset.
+
+Evaluation metrics:
+
+* Accuracy
+* Precision
+* Recall
+* F1 Score
+
+A Confusion Matrix was also generated to compare predicted labels with actual labels.
+
+Output:
+
+* `confusion_matrix.png`
+
+The trained model is saved as:
+
+```text
+mlp_model.pth
+```
+
+This model file can be loaded later for testing or inference without retraining.
 
 # Dataset Features
 
-The model uses the following telecom KPIs:
+The model uses the following telecom KPI features:
 
 * RSRP
 * SINR
@@ -182,36 +276,7 @@ The model uses the following telecom KPIs:
 * Packet Loss
 * Connected Users
 
-Additional time-based features may also be included depending on the preprocessing strategy.
-
-# Project Workflow
-
-1. Load the telecom KPI dataset.
-2. Clean and preprocess the data.
-3. Generate and encode target labels.
-4. Standardize numerical features.
-5. Split the dataset into training, validation, and testing sets.
-6. Convert the data into PyTorch tensors.
-7. Create TensorDatasets and DataLoaders.
-8. Build the MLP model.
-9. Train the model using forward propagation and backpropagation.
-10. Perform learning rate experiments and compare model performance.
-
-# Output
-
-After completing Tasks 1–6, the project includes:
-
-* Cleaned and preprocessed telecom KPI dataset
-* Encoded target labels
-* Standardized feature set
-* Training, validation, and testing datasets
-* PyTorch TensorDatasets and DataLoaders
-* Multi-Layer Perceptron (MLP) model
-* Model training using CrossEntropyLoss and Adam optimizer
-* Learning rate comparison experiments
-* Training and validation accuracy for different learning rates
-
-The project is now ready for the next phase, which focuses on model evaluation, performance visualization, and anomaly prediction on unseen telecom KPI data.
+These KPIs are used to classify the network status into Normal, Warning, or Critical.
 
 ## Author
 Vibhuti Chaddha
